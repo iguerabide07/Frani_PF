@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FI Performance — Software de entrenamiento profesional</title>
+<meta name="description" content="Gestioná tus alumnos, creá rutinas personalizadas y seguí su progreso en tiempo real. Software para entrenadores y personas independientes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080C12;
+  --surface:#0F1520;
+  --surface2:#161E2E;
+  --border:#1E2D42;
+  --green:#16C65A;
+  --green-dim:#0F9440;
+  --green-bg:rgba(22,198,90,.08);
+  --text:#F0F4FA;
+  --text2:#8898AA;
+  --text3:#4A5A6E;
+  --red:#EF4444;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .3s;backdrop-filter:blur(0px)}
+nav.scrolled{background:rgba(8,12,18,.9);border-color:var(--border);backdrop-filter:blur(12px)}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:.5px;color:var(--text)}
+.nav-logo span{color:var(--green)}
+.nav-cta{background:var(--green);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:background .15s}
+.nav-cta:hover{background:var(--green-dim)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(22,198,90,.12) 0%, transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--green-bg);border:1px solid rgba(22,198,90,.25);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--green);letter-spacing:.5px;text-transform:uppercase;margin-bottom:28px}
+.hero-eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(56px,8vw,96px);line-height:.95;letter-spacing:-1px;color:var(--text);max-width:900px;text-transform:uppercase}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--text2);max-width:520px;margin:24px auto 40px;line-height:1.6}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:var(--green);color:#fff;padding:15px 36px;border-radius:10px;font-size:16px;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--green-dim);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text2);padding:15px 28px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+
+/* MOCKUP */
+.mockup-wrap{position:relative;margin:64px auto 0;max-width:780px;width:100%}
+.mockup-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(22,198,90,.15) 0%,transparent 70%);pointer-events:none}
+.mockup{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+.mockup-bar{background:var(--surface2);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.mockup-dot{width:10px;height:10px;border-radius:50%}
+.mockup-url{flex:1;background:var(--black);border-radius:6px;padding:5px 12px;font-size:11px;color:var(--text3);text-align:center}
+.mockup-screen{padding:20px}
+/* Simulated app UI */
+.sim-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sim-avatar{width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.sim-name{font-size:13px;font-weight:600;color:var(--text)}
+.sim-role{font-size:11px;color:var(--text2)}
+.sim-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.sim-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.sim-ej{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.sim-ej:last-child{border:none}
+.sim-ej-name{font-size:12px;color:var(--text);font-weight:500}
+.sim-ej-val{font-size:11px;color:var(--text2)}
+.sim-badge{background:var(--green-bg);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid rgba(22,198,90,.2)}
+.sim-timer{background:linear-gradient(135deg,#0F9440,#16C65A);border-radius:10px;padding:12px;text-align:center;margin-top:10px}
+.sim-timer-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:#fff;line-height:1}
+.sim-timer-lbl{font-size:10px;color:rgba(255,255,255,.7);margin-top:2px}
+/* Progress bars */
+.sim-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sim-bar-label{font-size:11px;color:var(--text2);width:80px;flex-shrink:0}
+.sim-bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.sim-bar-fill{height:100%;border-radius:3px;background:var(--green)}
+.sim-bar-val{font-size:11px;color:var(--green);font-weight:600;width:36px;text-align:right}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:80px auto;max-width:700px}
+.stat{background:var(--surface);padding:32px 24px;text-align:center}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:var(--green);line-height:1}
+.stat-label{font-size:13px;color:var(--text2);margin-top:4px}
+
+/* FEATURES */
+.section{padding:80px 24px;max-width:1100px;margin:0 auto}
+.section-eye{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.section-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(32px,5vw,52px);line-height:1.05;text-transform:uppercase;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--text2);max-width:500px;line-height:1.6}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:48px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color .2s}
+.feat:hover{border-color:rgba(22,198,90,.3)}
+.feat-ico{width:44px;height:44px;border-radius:10px;background:var(--green-bg);border:1px solid rgba(22,198,90,.2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.feat h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.feat p{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* PLANES */
+.plans{padding:80px 24px;background:var(--surface)}
+.plans-inner{max-width:1000px;margin:0 auto}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px}
+.plan{background:var(--black);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;transition:border-color .2s}
+.plan:hover{border-color:var(--green)}
+.plan.featured{border-color:var(--green);background:linear-gradient(160deg,rgba(22,198,90,.06) 0%,var(--black) 100%)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+.plan-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;text-transform:uppercase;color:var(--text);margin-bottom:6px}
+.plan-for{font-size:12px;color:var(--text3);margin-bottom:20px}
+.plan-price{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:var(--text);line-height:1}
+.plan-price sup{font-size:22px;font-weight:700;vertical-align:top;margin-top:8px;display:inline-block}
+.plan-price-period{font-size:13px;color:var(--text2);margin-bottom:24px;margin-top:4px}
+.plan-divider{height:1px;background:var(--border);margin-bottom:24px}
+.plan-feat{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;font-size:13px;color:var(--text2)}
+.plan-feat-ico{color:var(--green);flex-shrink:0;margin-top:1px}
+.plan-feat-ico.no{color:var(--text3)}
+.plan-cta{display:block;text-align:center;padding:13px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;margin-top:28px;transition:all .15s;border:none;cursor:pointer;width:100%}
+.plan-cta.primary{background:var(--green);color:#fff}
+.plan-cta.primary:hover{background:var(--green-dim)}
+.plan-cta.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.plan-cta.secondary:hover{border-color:var(--green);color:var(--green)}
+
+/* COMO FUNCIONA */
+.steps{padding:80px 24px;max-width:900px;margin:0 auto}
+.steps-list{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:60px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--border);align-items:start}
+.step:last-child{border:none}
+.step-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--green);line-height:1;opacity:.5}
+.step h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+.step p{font-size:14px;color:var(--text2);line-height:1.6}
+.step-tag{display:inline-block;background:var(--green-bg);border:1px solid rgba(22,198,90,.2);color:var(--green);font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}
+
+/* FAQ */
+.faq{padding:80px 24px;max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-q{font-size:15px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.faq-q span{color:var(--green);font-size:20px;transition:transform .2s}
+.faq-a{font-size:13px;color:var(--text2);line-height:1.7;overflow:hidden;max-height:0;transition:max-height .3s ease,padding .3s}
+.faq-item.open .faq-a{max-height:200px;padding-top:12px}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+
+/* FOOTER */
+footer{padding:48px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1100px;margin:0 auto}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:var(--text2)}
+.footer-logo span{color:var(--green)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:var(--text3);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--green)}
+.footer-copy{font-size:12px;color:var(--text3);width:100%;text-align:center}
+
+/* MOBILE */
+@media(max-width:640px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat{padding:20px 12px}
+  .stat-num{font-size:38px}
+  .nav-logo{font-size:18px}
+  footer{flex-direction:column;align-items:center;text-align:center}
+  .footer-links{flex-direction:column;align-items:center;gap:12px}
+  .step{grid-template-columns:40px 1fr;gap:16px}
+  .step-num{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">FI <span>Performance</span></div>
+  <a href="#planes" class="nav-cta">Ver planes</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Software para entrenadores · Lanzamiento 2025</div>
+  <h1>Gestioná<br>tus alumnos.<br><em>Profesionalizate.</em></h1>
+  <p class="hero-sub">Rutinas personalizadas, seguimiento en tiempo real, evaluaciones y cobros — todo en un solo lugar. Tus alumnos entrenan desde el celular.</p>
+  <div class="hero-actions">
+    <a href="#planes" class="btn-primary">Empezar gratis 14 días →</a>
+    <a href="#como-funciona" class="btn-ghost">Ver cómo funciona</a>
+  </div>
+
+  <!-- MOCKUP ANIMADO -->
+  <div class="mockup-wrap">
+    <div class="mockup-glow"></div>
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#FF5F57"></div>
+        <div class="mockup-dot" style="background:#FEBC2E"></div>
+        <div class="mockup-dot" style="background:#28C840"></div>
+        <div class="mockup-url">fiperformance.vercel.app</div>
+      </div>
+      <div class="mockup-screen">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <!-- Panel izquierdo: sesión del alumno -->
+          <div>
+            <div class="sim-header">
+              <div class="sim-avatar">FI</div>
+              <div><div class="sim-name">Fran Iguerabide</div><div class="sim-role">Alumno</div></div>
+            </div>
+            <div class="sim-card">
+              <div class="sim-label">Sesión de hoy · Día 1</div>
+              <div class="sim-ej">
+                <div>
+                  <div class="sim-ej-name">Press banca</div>
+                  <div class="sim-ej-val">4 × 6-8 reps</div>
+                </div>
+                <span class="sim-badge">✓ Lista</span>
+              </div>
+              <div class="sim-ej">
+                <div>
+                  <div class="sim-ej-name">Sentadilla</div>
+                  <div class="sim-ej-val">4 × 8-10 reps</div>
+                </div>
+                <span class="sim-badge">✓ Lista</span>
+              </div>
+              <div class="sim-ej" style="opacity:.5">
+                <div>
+                  <div class="sim-ej-name">Peso muerto</div>
+                  <div class="sim-ej-val">3 × 6 reps</div>
+                </div>
+              </div>
+            </div>
+            <div class="sim-timer" id="sim-timer">
+              <div class="sim-timer-num" id="sim-num">1:30</div>
+              <div class="sim-timer-lbl">Descanso · A (ronda 2)</div>
+            </div>
+          </div>
+          <!-- Panel derecho: dashboard profe -->
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Dashboard</div>
+            <div class="sim-card">
+              <div class="sim-label">Wellness promedio</div>
+              <div class="sim-bar-row"><span class="sim-bar-label">Sueño</span><div class="sim-bar-track"><div class="sim-bar-fill" style="width:80%"></div></div><span class="sim-bar-val">4.0</span></div>
+              <div class="sim-bar-row"><span class="sim-bar-label">Fatiga</span><div class="sim-bar-track"><div class="sim-bar-fill" style="width:60%"></div></div><span class="sim-bar-val">3.0</span></div>
+              <div class="sim-bar-row"><span class="sim-bar-label">Ánimo</span><div class="sim-bar-track"><div class="sim-bar-fill" style="width:90%"></div></div><span class="sim-bar-val">4.5</span></div>
+            </div>
+            <div class="sim-card" style="margin-top:10px">
+              <div class="sim-label">Alumnos activos</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px">
+                <div style="background:var(--surface);border-radius:8px;padding:8px;text-align:center">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--green)">12</div>
+                  <div style="font-size:9px;color:var(--text3)">Activos</div>
+                </div>
+                <div style="background:var(--surface);border-radius:8px;padding:8px;text-align:center">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--text)">8</div>
+                  <div style="font-size:9px;color:var(--text3)">Hoy</div>
+                </div>
+                <div style="background:var(--surface);border-radius:8px;padding:8px;text-align:center">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:#FEBC2E">2</div>
+                  <div style="font-size:9px;color:var(--text3)">Sin pagar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div style="padding:0 24px">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Alumnos ilimitados en Pro</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Funciona desde el celular</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Lugar para gestionar todo</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-eye">Funcionalidades</div>
+  <h2 class="section-h">Todo lo que necesitás<br>para entrenar mejor.</h2>
+  <p class="section-sub">Diseñado por un entrenador, para entrenadores. Sin funciones innecesarias.</p>
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-ico">📋</div>
+      <h3>Planificación con biseries</h3>
+      <p>Armá rutinas por bloques, días y secciones. Soporta biseries, triseries y superseries con timer automático entre rondas.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">⏱️</div>
+      <h3>Timer de pausa automático</h3>
+      <p>Al completar una serie, el timer de descanso arranca solo. El alumno no necesita hacer nada — la app lo guía.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">💚</div>
+      <h3>Wellness diario</h3>
+      <p>Antes de entrenar, el alumno responde 6 preguntas de recuperación. El profe ve el promedio semanal de cada uno.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">📈</div>
+      <h3>Progresión y 1RM</h3>
+      <p>Seguimiento de peso y reps por ejercicio. Estimación automática del 1RM. Gráfico de evolución sesión a sesión.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🔬</div>
+      <h3>Evaluaciones funcionales y deportivas</h3>
+      <p>Saltos SJ/CMJ/ABK, ROM, asimetrías, fuerza isométrica. Compara inicial vs final con datos objetivos.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">💸</div>
+      <h3>Control de cobros</h3>
+      <p>Registrá pagos, controlá vencimientos y recibí alertas. Sin integraciones externas, todo dentro de la plataforma.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🎬</div>
+      <h3>Glosario con videos</h3>
+      <p>Biblioteca de ejercicios con video de referencia. El alumno puede ver el video de cada ejercicio directamente en la sesión.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🔥</div>
+      <h3>HIIT, Tabata y AMRAP</h3>
+      <p>Creá clases cronometradas con tiempos de trabajo/descanso, rondas y ejercicios. Ideal para clases grupales.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🚴</div>
+      <h3>Running y ciclismo</h3>
+      <p>Planificación de sesiones aeróbicas con distancia, ritmo, zonas y potencia. El alumno registra desde su cuenta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="steps" id="como-funciona">
+  <div class="section-eye">Proceso</div>
+  <h2 class="section-h">De cero a alumno<br>entrenando en 10 minutos.</h2>
+  <div class="steps-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <span class="step-tag">Configuración</span>
+        <h3>Creás tu cuenta como Profesor</h3>
+        <p>Te registrás, completás tu perfil y el glosario de ejercicios queda disponible. Si ya tenés ejercicios propios, los importás en segundos.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <span class="step-tag">Alumno</span>
+        <h3>Mandás el link de inscripción</h3>
+        <p>Compartís un link único. El alumno completa sus datos (objetivos, lesiones, días disponibles) y queda como pendiente hasta que vos lo aprobás.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <span class="step-tag">Planificación</span>
+        <h3>Armás la rutina</h3>
+        <p>Creás días, bloques y ejercicios. Configurás series, reps, RIR, pausas y biseries. La subís a la nube y el alumno la ve al instante.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <span class="step-tag">Entrenamiento</span>
+        <h3>El alumno entrena desde el celular</h3>
+        <p>Carga pesos y reps, el timer de descanso arranca solo, el wellness queda registrado. Todo sin que vos tengas que hacer nada.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div>
+        <span class="step-tag">Seguimiento</span>
+        <h3>Seguís el progreso en tiempo real</h3>
+        <p>Dashboard con sesiones, rachas, wellness y progresión de cada alumno. Informes para compartir. Evaluaciones para medir el impacto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section class="plans" id="planes">
+  <div class="plans-inner">
+    <div class="section-eye" style="text-align:center">Precios</div>
+    <h2 class="section-h" style="text-align:center">Sin sorpresas.<br>Precios en pesos.</h2>
+    <p style="text-align:center;color:var(--text2);margin-top:12px;font-size:15px">14 días gratis. Sin tarjeta requerida.</p>
+
+    <div class="plans-grid">
+      <!-- INDEPENDIENTE -->
+      <div class="plan">
+        <div class="plan-name">Independiente</div>
+        <div class="plan-for">Para quien entrena por cuenta propia</div>
+        <div class="plan-price"><sup>$</sup>4.999<small style="font-size:24px;font-weight:600">/mes</small></div>
+        <div class="plan-price-period">ARS · IVA incluido</div>
+        <div class="plan-divider"></div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Rutinas propias y planificación</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Sesiones con timer de descanso</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Progresión y 1RM estimado</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Glosario con videos</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>HIIT, Tabata y AMRAP</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Running y ciclismo</div>
+        <div class="plan-feat"><span class="plan-feat-ico no">✗</span><span style="color:var(--text3)">Gestión de alumnos</span></div>
+        <div class="plan-feat"><span class="plan-feat-ico no">✗</span><span style="color:var(--text3)">Evaluaciones</span></div>
+        <a href="https://fiperformance.vercel.app" class="plan-cta secondary" target="_blank">Empezar gratis</a>
+      </div>
+
+      <!-- ENTRENADOR BASE -->
+      <div class="plan featured">
+        <div class="plan-badge">Más elegido</div>
+        <div class="plan-name">Entrenador</div>
+        <div class="plan-for">Hasta 15 alumnos activos</div>
+        <div class="plan-price"><sup>$</sup>12.999<small style="font-size:24px;font-weight:600">/mes</small></div>
+        <div class="plan-price-period">ARS · IVA incluido</div>
+        <div class="plan-divider"></div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Todo lo del plan Independiente</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Hasta 15 alumnos</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Inscripción por link</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Planificación por alumno</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Dashboard de seguimiento</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Control de cobros</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Evaluaciones funcionales</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Informes para compartir</div>
+        <a href="https://fiperformance.vercel.app" class="plan-cta primary" target="_blank">Empezar gratis 14 días</a>
+      </div>
+
+      <!-- ENTRENADOR PRO -->
+      <div class="plan">
+        <div class="plan-name">Pro</div>
+        <div class="plan-for">Alumnos ilimitados</div>
+        <div class="plan-price"><sup>$</sup>22.999<small style="font-size:24px;font-weight:600">/mes</small></div>
+        <div class="plan-price-period">ARS · IVA incluido</div>
+        <div class="plan-divider"></div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Todo lo del plan Entrenador</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Alumnos ilimitados</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Evaluaciones deportivas (SJ/CMJ/ABK)</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Running y ciclismo avanzado</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Soporte prioritario</div>
+        <div class="plan-feat"><span class="plan-feat-ico">✓</span>Acceso anticipado a funciones nuevas</div>
+        <a href="https://wa.me/5493548404792?text=Hola%21+Quiero+el+plan+Pro+de+FI+Performance" class="plan-cta secondary" target="_blank">Consultar por WhatsApp</a>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:13px;color:var(--text3);margin-top:24px">¿Tenés más de 30 alumnos o querés un plan para tu gimnasio? <a href="https://wa.me/5493548404792" target="_blank" style="color:var(--green);text-decoration:none">Escribinos.</a></p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="section-eye">Preguntas frecuentes</div>
+  <h2 class="section-h">FAQ</h2>
+  <div style="margin-top:32px">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Necesito instalar algo? <span>+</span></div>
+      <div class="faq-a">No. FI Performance funciona 100% desde el navegador, en celular y computadora. Tus alumnos tampoco instalan nada.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Puedo probar antes de pagar? <span>+</span></div>
+      <div class="faq-a">Sí. Tenés 14 días gratis sin necesidad de tarjeta de crédito. Si después no querés seguir, no te cobramos nada.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Cómo pagan mis alumnos? <span>+</span></div>
+      <div class="faq-a">Tus alumnos no pagan la plataforma — eso lo pagás vos. Ellos acceden gratis con la cuenta que vos les activás. El control de cobros de tus honorarios como entrenador sí está incluido en la app.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Qué pasa si un alumno ya usaba la app de forma independiente? <span>+</span></div>
+      <div class="faq-a">Puede migrar a tu cuenta conservando todo su historial de sesiones, progresión y wellness. Sus datos no se pierden.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Puedo cambiar de plan? <span>+</span></div>
+      <div class="faq-a">Sí, cuando quieras. Si subís de plan, el cambio es inmediato. Si bajás, el cambio aplica al próximo ciclo de facturación.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Mis datos están seguros? <span>+</span></div>
+      <div class="faq-a">Los datos se almacenan en Supabase (infraestructura de AWS) con autenticación segura y row-level security. Nadie excepto vos y tus alumnos accede a la información.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section style="padding:80px 24px;text-align:center;background:var(--surface);border-top:1px solid var(--border)">
+  <div style="max-width:600px;margin:0 auto">
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(40px,6vw,64px);text-transform:uppercase;line-height:1;margin-bottom:16px">Dejá de<br>gestionar con<br><span style="color:var(--green)">WhatsApp.</span></h2>
+    <p style="color:var(--text2);font-size:16px;margin-bottom:36px">14 días gratis. Sin tarjeta. Sin compromiso.</p>
+    <a href="https://fiperformance.vercel.app" class="btn-primary" target="_blank" style="font-size:18px;padding:18px 48px">Empezar ahora →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="padding:0 24px">
+  <footer>
+    <div class="footer-logo">FI <span>Performance</span></div>
+    <div class="footer-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#planes">Precios</a>
+      <a href="https://wa.me/5493548404792" target="_blank">Soporte</a>
+      <a href="https://fiperformance.vercel.app" target="_blank">Ingresar</a>
+    </div>
+    <div class="footer-copy">© 2025 FI Performance. Desarrollado en Argentina.</div>
+  </footer>
+</div>
+
+<script>
+// Nav scroll
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// Timer demo animado
+var _t=90,_dir=-1;
+setInterval(function(){
+  _t+=_dir;
+  if(_t<=0){_t=0;_dir=1;}
+  if(_t>=90)_dir=-1;
+  var m=Math.floor(_t/60),s=_t%60;
+  var el=document.getElementById('sim-num');
+  if(el)el.textContent=m+':'+(s<10?'0':'')+s;
+},1000);
+
+// FAQ toggle
+function toggleFaq(el){
+  var item=el.parentElement;
+  var wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});
+  if(!wasOpen)item.classList.add('open');
+}
+
+// Smooth scroll for anchors
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>
