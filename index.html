@@ -9437,26 +9437,97 @@ async function subirGlosarioNube(){
 // Glosario oficial: se guarda con el UID real del admin
 // Autoguardado silencioso en Supabase (sin confirmación)
 // Modal de carga masiva de videos
+// Videos a mapear
+var _VIDEOS_PENDIENTES=[
+'https://www.youtube.com/watch?v=1_3U2-w2eVU','https://www.youtube.com/watch?v=c3m9v6HocJ4','https://www.youtube.com/watch?v=rnHSD0PvHOs','https://www.youtube.com/watch?v=BUmhd35cyz4','https://www.youtube.com/watch?v=taWq3QXH1lg','https://www.youtube.com/watch?v=eNiENQzVHCE','https://www.youtube.com/watch?v=mWEaKcFWhno','https://www.youtube.com/watch?v=E8qJXJ-D5zg','https://www.youtube.com/watch?v=YE7nJDAH0II','https://www.youtube.com/watch?v=HcUrNYyYbqM','https://www.youtube.com/watch?v=3T58k2X7Vu8','https://www.youtube.com/watch?v=kGUx6-pXU-k','https://www.youtube.com/watch?v=7KMYH9gyeEM','https://www.youtube.com/watch?v=DrkH2KxICc8','https://www.youtube.com/watch?v=vQtoIRRnykM','https://www.youtube.com/watch?v=kf-lQamAAxs','https://www.youtube.com/watch?v=jfxPHs2ghQI','https://www.youtube.com/watch?v=A2m2hKcvtk0','https://www.youtube.com/watch?v=HXzCOkKG_Y8','https://www.youtube.com/watch?v=qwdwllxIO94','https://www.youtube.com/watch?v=xZgYL4s8E1w','https://www.youtube.com/watch?v=I6rIHcaxcHk','https://www.youtube.com/watch?v=dkgUKzQ8iJw','https://www.youtube.com/watch?v=XoDNJApSqgY','https://www.youtube.com/watch?v=5d0chKczMjA','https://www.youtube.com/watch?v=zfEFBbc9FiA','https://www.youtube.com/watch?v=ulWN0yZNDC4','https://www.youtube.com/watch?v=V5JSCtTynAY','https://www.youtube.com/watch?v=KBpys4KTG5Q','https://www.youtube.com/watch?v=YHWyxjFfPgo','https://www.youtube.com/watch?v=EkK3oVBA__Q','https://www.youtube.com/watch?v=jzlV_9BOFr8','https://www.youtube.com/watch?v=HC6h-9IB5t0','https://www.youtube.com/watch?v=-Zsx2JTfGsU','https://www.youtube.com/watch?v=XVEMTDlNLyU','https://www.youtube.com/watch?v=yz4KXzZHAE8','https://www.youtube.com/watch?v=XaSIn0cva7w','https://www.youtube.com/watch?v=SDT1KrcO8ac','https://www.youtube.com/watch?v=R_dbUKgKwJw','https://www.youtube.com/watch?v=kaMbq0BD2q0','https://www.youtube.com/watch?v=p6SAfr8kN6w','https://www.youtube.com/watch?v=SjHRwhGXBl8','https://www.youtube.com/watch?v=L_khHgMz9uU','https://www.youtube.com/watch?v=g3Sb6upvnMM','https://www.youtube.com/watch?v=ar8nav0jGoE','https://www.youtube.com/watch?v=V68OPfUy-OA','https://www.youtube.com/watch?v=4atz03A80dg','https://www.youtube.com/watch?v=DvEnixpoSg0','https://www.youtube.com/watch?v=UI9FBkBTNDM','https://www.youtube.com/watch?v=1F_ZBdDm5ss','https://www.youtube.com/watch?v=SjypFUbZBCA','https://www.youtube.com/watch?v=2bzTfdB3j4M','https://www.youtube.com/watch?v=ggNWo3p-nfk','https://www.youtube.com/watch?v=XHLXW48AD54','https://www.youtube.com/watch?v=PYupSWT1TPA','https://www.youtube.com/watch?v=VKK5ukmfGhc','https://www.youtube.com/watch?v=7V0I0-L6318','https://www.youtube.com/watch?v=cL1mvysWq2k','https://www.youtube.com/watch?v=BOI7reWu6fI','https://www.youtube.com/watch?v=2v8vI0De7A0','https://www.youtube.com/watch?v=at1yKyXohgU','https://www.youtube.com/watch?v=k5ngIxQB3eU','https://www.youtube.com/watch?v=iYiMy9pKUyI','https://www.youtube.com/watch?v=U4X1QrnlVvM','https://www.youtube.com/watch?v=goN-qGPbGZc','https://www.youtube.com/watch?v=E5i5i5b2oGM','https://www.youtube.com/watch?v=b0D78PjHqRM','https://www.youtube.com/watch?v=DW7bJ3lRn4c','https://www.youtube.com/watch?v=BtvW8qoXHtc','https://www.youtube.com/watch?v=VBT3DOG5V08','https://www.youtube.com/watch?v=3xPxaWPY_Ns','https://www.youtube.com/watch?v=lEdhBlKHCDs','https://www.youtube.com/watch?v=4atCzx_QIHY','https://www.youtube.com/watch?v=0QUJqTA5PEk','https://www.youtube.com/watch?v=T3BHQJymG1o','https://www.youtube.com/watch?v=OKfJYP3RVgQ','https://www.youtube.com/watch?v=ZjG3isUl1r8','https://www.youtube.com/watch?v=DoPp65YAHyM','https://www.youtube.com/watch?v=rluMqUumE2o','https://www.youtube.com/watch?v=WlPN7tG_m_M','https://www.youtube.com/watch?v=6uRBlnGh-t4','https://www.youtube.com/watch?v=Q6XNyfKzy58','https://www.youtube.com/watch?v=2BMcSoOYNOo','https://www.youtube.com/watch?v=P0eNZZBBQIo','https://www.youtube.com/watch?v=iRDB4tNNIhA','https://www.youtube.com/watch?v=tnJErD2t-Hw','https://www.youtube.com/watch?v=s-oeZX56jH4','https://www.youtube.com/watch?v=qPjup6m_5WE','https://www.youtube.com/watch?v=CFbN_RhibPI','https://www.youtube.com/watch?v=syXRNy18g0M','https://www.youtube.com/watch?v=pXg0x7-4Ep4','https://www.youtube.com/watch?v=nWul6WMVt44','https://www.youtube.com/watch?v=SPViQh7x2sw','https://www.youtube.com/watch?v=9Atw-n90D94','https://www.youtube.com/watch?v=r0W8YreYibA','https://www.youtube.com/watch?v=NKRUpm7HDQQ','https://www.youtube.com/watch?v=hqfvny46oKI','https://www.youtube.com/watch?v=claDS8f1Loc','https://www.youtube.com/watch?v=qEDZYYPjoB4','https://www.youtube.com/watch?v=NG-tstEu6bg','https://www.youtube.com/watch?v=3CQrWShDXGA','https://www.youtube.com/watch?v=eMzzqEdwd3s','https://www.youtube.com/watch?v=Eg0zU8k7D-M','https://www.youtube.com/watch?v=FAxYkitgCQI','https://www.youtube.com/watch?v=aVTRSGjdGAU','https://www.youtube.com/watch?v=1shMvL51x18','https://www.youtube.com/watch?v=Fh6vFbAkhW4','https://www.youtube.com/watch?v=MGTo_d_c3Qo','https://www.youtube.com/watch?v=wpsaMyaEJk4','https://www.youtube.com/watch?v=zCDkoIQK2k4','https://www.youtube.com/watch?v=HyfaOq-jij0','https://www.youtube.com/watch?v=kNR5fa0bnuc','https://www.youtube.com/watch?v=QmN8F-iWL4g','https://www.youtube.com/watch?v=fTba8yWoSgI','https://www.youtube.com/watch?v=9IpZZublTRM','https://www.youtube.com/watch?v=aJzmY0-4Dc4','https://www.youtube.com/watch?v=7uvJVL2IbjU','https://www.youtube.com/watch?v=xM9xxmtYwqE','https://www.youtube.com/watch?v=zwb_m6n-qbo','https://www.youtube.com/watch?v=OskpsD1eDWw','https://www.youtube.com/watch?v=FeTP-OEHUfc','https://www.youtube.com/watch?v=qXEMrfKdh60','https://www.youtube.com/watch?v=sh5ScQzYYP4','https://www.youtube.com/watch?v=8TvUGqODhvE','https://www.youtube.com/watch?v=cxyNG0JhkPs','https://www.youtube.com/watch?v=dbczWvROaoM','https://www.youtube.com/watch?v=lC7lLkjDZ_k','https://www.youtube.com/watch?v=rOrr4kSwQpE','https://www.youtube.com/watch?v=WAKysLrk7EE','https://www.youtube.com/watch?v=blf9gmxcCPM','https://www.youtube.com/watch?v=oUEdlT7G0Uc','https://www.youtube.com/watch?v=QEW6RO0O-ak','https://www.youtube.com/watch?v=a_cSuuo8nI0','https://www.youtube.com/watch?v=rqElsAusSR4','https://www.youtube.com/watch?v=vLizfrsL8h4','https://www.youtube.com/watch?v=stNaZQwZnHQ','https://www.youtube.com/watch?v=MHXk0RcVjJs','https://www.youtube.com/watch?v=54I-dMR4IkE','https://www.youtube.com/watch?v=u7G11oNQ1jc','https://www.youtube.com/watch?v=iwmVqcwJFbs','https://www.youtube.com/watch?v=jYVWvamCyEU','https://www.youtube.com/watch?v=KNNGuNolDo8','https://www.youtube.com/watch?v=hEEUcoWZ6AM','https://www.youtube.com/watch?v=HAM8wF-xAbE','https://www.youtube.com/watch?v=GEhG3UwUvck','https://www.youtube.com/watch?v=Oq8l5gDwf8U','https://www.youtube.com/watch?v=bdcKHTb-LGU','https://www.youtube.com/watch?v=m-KFtIghoqw','https://www.youtube.com/watch?v=rpkoQfrSQj0','https://www.youtube.com/watch?v=xTFXMruuA2g','https://www.youtube.com/watch?v=Ofs7d07Aguo','https://www.youtube.com/watch?v=vCrHWfXfiMI','https://www.youtube.com/watch?v=FWW5fTFI3Rc','https://www.youtube.com/watch?v=ts4cnxxkL88','https://www.youtube.com/watch?v=IGPSmStLimo','https://www.youtube.com/watch?v=PCDHMMBnkhY','https://www.youtube.com/watch?v=u93eXsbk5Uw','https://www.youtube.com/watch?v=9_tbUqJ45QU','https://www.youtube.com/watch?v=cH9JHQym704','https://www.youtube.com/watch?v=A9cURRmXcmw','https://www.youtube.com/watch?v=T2LnfXnEy1A','https://www.youtube.com/watch?v=U-G_Rg6F5AM','https://www.youtube.com/watch?v=yvJ2FfXKDCA','https://www.youtube.com/watch?v=PKqdGSD2dVM','https://www.youtube.com/watch?v=6dPzVDjzhsQ','https://www.youtube.com/watch?v=08O99FdfkKc','https://www.youtube.com/watch?v=GZoExT13ZoE','https://www.youtube.com/watch?v=gLoyBaH2Odk','https://www.youtube.com/watch?v=Q17q4Hx1kX0','https://www.youtube.com/watch?v=tQAd8nyiA74','https://www.youtube.com/watch?v=-oPij-U255k','https://www.youtube.com/watch?v=kGLt5C5OJTE','https://www.youtube.com/watch?v=nUGiTyQw9ws','https://www.youtube.com/watch?v=QjYG3b6wn-4','https://www.youtube.com/watch?v=09EyISDsblw','https://www.youtube.com/watch?v=ZspTOy7zUJ8','https://www.youtube.com/watch?v=yZkLn4mnVxo','https://www.youtube.com/watch?v=5_G8zuTVUS0','https://www.youtube.com/watch?v=Mr6qHOeJvSs','https://www.youtube.com/watch?v=C5hIwOyU8Xw','https://www.youtube.com/watch?v=exJZOpsHBWY','https://www.youtube.com/watch?v=7jeW4v_oaes','https://www.youtube.com/watch?v=OCXMbIzYJTQ','https://www.youtube.com/watch?v=Xaen1Yk5wvM','https://www.youtube.com/watch?v=1aEMlRmyzp8','https://www.youtube.com/watch?v=-UxteQcvbrw','https://www.youtube.com/watch?v=215W25TOh3w','https://www.youtube.com/watch?v=Sz_DnIJNQ9c','https://www.youtube.com/watch?v=SKapoHxQxuk','https://www.youtube.com/watch?v=gr3i4mU5kBc','https://www.youtube.com/watch?v=BdEXk-wHyfE','https://www.youtube.com/watch?v=znbqYvqRU84','https://www.youtube.com/watch?v=SvaI45J8sKY','https://www.youtube.com/watch?v=lr_T0y2nAoQ','https://www.youtube.com/watch?v=Aqu8nLUNumE','https://www.youtube.com/watch?v=q0zh5L0fX54','https://www.youtube.com/watch?v=x8jN08mVb1I','https://www.youtube.com/watch?v=HGlionNfIMI','https://www.youtube.com/watch?v=XaxSKC6yfVE','https://www.youtube.com/watch?v=4OT8QyQhbb8','https://www.youtube.com/watch?v=kH2AGb1MJD0','https://www.youtube.com/watch?v=dZnOIKhiXUE','https://www.youtube.com/watch?v=flaLV1e01nw','https://www.youtube.com/watch?v=2NuI6HNeMpc','https://www.youtube.com/watch?v=dNDX2Pnjmvo','https://www.youtube.com/watch?v=TtnrgTwaL4o','https://www.youtube.com/watch?v=fAUlDH_65kA','https://www.youtube.com/watch?v=gDHtw0HIhoE','https://www.youtube.com/watch?v=DI95jYBymwk','https://www.youtube.com/watch?v=FfXq0AUz_Xw','https://www.youtube.com/watch?v=l_NratajE0Q','https://www.youtube.com/watch?v=QdCzafAXJhY','https://www.youtube.com/watch?v=Rn7jAlB8nos','https://www.youtube.com/watch?v=yHTbstQDkKc','https://www.youtube.com/watch?v=w5lWpGMf4tw','https://www.youtube.com/watch?v=8hKM845Aob4','https://www.youtube.com/watch?v=3bc8XGDaAq0','https://www.youtube.com/watch?v=EB4MrmR-6Sk','https://www.youtube.com/watch?v=AzdcJAlR1RU','https://www.youtube.com/watch?v=vcmrTXuFg6s','https://www.youtube.com/watch?v=E5QHUwl3iIY','https://www.youtube.com/watch?v=4C3GYV9mT4c','https://www.youtube.com/watch?v=SqJUg-XqPmc','https://www.youtube.com/watch?v=42007_yDJXQ','https://www.youtube.com/watch?v=U_S0lf5ysDs','https://www.youtube.com/watch?v=n-aSgZ5s6DI','https://www.youtube.com/watch?v=ZRK5o3vQ5y4','https://www.youtube.com/watch?v=1NTpNDJEeyI','https://www.youtube.com/watch?v=3h7xIEuTof0','https://www.youtube.com/watch?v=bkGUWaPOk5s','https://www.youtube.com/watch?v=A9JmVnQzGKY','https://www.youtube.com/watch?v=TkTfy5Oggsc','https://www.youtube.com/watch?v=D3MdEdN8UvE','https://www.youtube.com/watch?v=ci2DjNU9IUw'
+];
+var _vidIdx=0;
+
 function abrirCargaMasiva(){
+  _vidIdx=0;
   var ov=document.getElementById('modal-carga-masiva');
   if(!ov){
     ov=document.createElement('div');ov.id='modal-carga-masiva';
-    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9900;display:flex;align-items:center;justify-content:center;padding:20px';
-    ov.innerHTML='<div style="background:var(--bg);border-radius:16px;padding:24px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto" onclick="event.stopPropagation()">'
-      +'<div style="font-size:17px;font-weight:800;margin-bottom:8px"><i class="ti ti-list-check" style="color:var(--accent)"></i> Carga masiva de videos</div>'
-      +'<div style="font-size:12px;color:var(--text2);margin-bottom:16px">Un ejercicio por línea. Formato: <b>Nombre del ejercicio | URL de YouTube</b><br>Ejemplo: Press banca | https://youtube.com/watch?v=...</div>'
-      +'<textarea id="carga-masiva-txt" style="width:100%;height:280px;font-size:12px;font-family:monospace;padding:10px;border:1px solid var(--border2);border-radius:8px" placeholder="Press banca | https://youtube.com/watch?v=xxx&#10;Sentadilla | https://youtu.be/yyy&#10;Peso muerto | https://youtube.com/watch?v=zzz"></textarea>'
-      +'<div id="carga-masiva-result" style="font-size:12px;margin-top:8px;color:var(--text2)"></div>'
-      +'<div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">'
-      +'<button class="btn" onclick="document.getElementById(\'modal-carga-masiva\').style.display=\'none\'">Cancelar</button>'
-      +'<button class="btn btn-primary" onclick="procesarCargaMasiva()"><i class="ti ti-check"></i> Aplicar</button>'
-      +'</div></div>';
-    ov.onclick=function(e){if(e.target===ov)ov.style.display='none';};
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9900;display:flex;align-items:center;justify-content:center;padding:20px';
     document.body.appendChild(ov);
   }
-  document.getElementById('carga-masiva-txt').value='';
-  document.getElementById('carga-masiva-result').textContent='';
+  _renderMapeoVideo();
   ov.style.display='flex';
+}
+
+function _ytId(url){var m=url.match(/(?:v=|youtu\.be\/|shorts\/)([^&\s?#]+)/);return m?m[1]:null;}
+
+function _renderMapeoVideo(){
+  var ov=document.getElementById('modal-carga-masiva');
+  var total=_VIDEOS_PENDIENTES.length;
+  var url=_VIDEOS_PENDIENTES[_vidIdx]||'';
+  var vid=_ytId(url);
+  var progPct=Math.round(_vidIdx/total*100);
+  
+  // Buscar si ya tiene un ejercicio asignado en el glosario
+  var ejercicioActual='';
+  if(vid){
+    var ejConVideo=DB.glosario.find(function(g){return g.vid&&g.vid.includes(vid);});
+    if(ejConVideo)ejercicioActual=ejConVideo.nombre;
+  }
+  
+  ov.innerHTML='<div style="background:var(--bg);border-radius:16px;padding:20px;max-width:640px;width:100%;max-height:95vh;overflow-y:auto" onclick="event.stopPropagation()">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+    +'<div style="font-size:15px;font-weight:800"><i class="ti ti-player-play" style="color:red"></i> Mapeo de videos '+(_vidIdx+1)+'/'+total+'</div>'
+    +'<button onclick="document.getElementById('modal-carga-masiva').style.display='none'" style="border:none;background:none;font-size:20px;cursor:pointer;color:var(--text2)">×</button>'
+    +'</div>'
+    +'<div style="height:5px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden"><div style="height:100%;width:'+progPct+'%;background:var(--accent);border-radius:3px"></div></div>'
+    +(vid?'<div style="position:relative;padding-bottom:40%;height:0;overflow:hidden;border-radius:10px;margin-bottom:12px"><iframe src="https://www.youtube.com/embed/'+vid+'?autoplay=1&mute=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen allow="autoplay"></iframe></div>':'')
+    +'<div style="margin-bottom:10px">'
+    +'<label style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Buscá el ejercicio en tu glosario</label>'
+    +'<input id="cm-buscar" list="cm-lista" placeholder="Escribí el nombre del ejercicio..." style="width:100%;padding:10px;font-size:14px;border-radius:8px;border:1px solid var(--border2)" value="'+ejercicioActual+'" oninput="_filtrarEj(this.value)">'
+    +'<datalist id="cm-lista">'
+    +(DB.glosario||[]).map(function(g){return '<option value="'+g.nombre+'">';}).join('')
+    +'</datalist>'
+    +'</div>'
+    +'<div id="cm-sugerencias" style="max-height:150px;overflow-y:auto;margin-bottom:12px;border:1px solid var(--border);border-radius:8px;display:none"></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +'<button class="btn" onclick="_cmSaltar()" style="flex:1">Saltar →</button>'
+    +'<button class="btn btn-primary" onclick="_cmAsignar()" style="flex:2"><i class="ti ti-check"></i> Asignar y siguiente</button>'
+    +(ejercicioActual?'<span style="font-size:11px;color:var(--green);align-self:center">✓ Ya asignado</span>':'')
+    +'</div>'
+    +'<div id="cm-msg" style="font-size:12px;margin-top:8px;color:var(--green)"></div>'
+    +'</div>';
+}
+
+function _filtrarEj(q){
+  var sugs=document.getElementById('cm-sugerencias');
+  if(!q||q.length<2){sugs.style.display='none';return;}
+  var matches=(DB.glosario||[]).filter(function(g){return g.nombre.toLowerCase().includes(q.toLowerCase());}).slice(0,8);
+  if(!matches.length){sugs.style.display='none';return;}
+  sugs.style.display='block';
+  sugs.innerHTML=matches.map(function(g){
+    return '<div style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border)" onclick="document.getElementById('cm-buscar').value=''+g.nombre.replace(/'/g,"\'")+'';document.getElementById('cm-sugerencias').style.display='none'">'+g.nombre+'</div>';
+  }).join('');
+}
+
+function _cmAsignar(){
+  var nombre=document.getElementById('cm-buscar').value.trim();
+  var url=_VIDEOS_PENDIENTES[_vidIdx];
+  if(!nombre){alert('Escribí el nombre del ejercicio primero.');return;}
+  var ej=(DB.glosario||[]).find(function(g){return g.nombre.toLowerCase().trim()===nombre.toLowerCase().trim();});
+  if(!ej){document.getElementById('cm-msg').innerHTML='<span style="color:var(--red)">No se encontró "'+nombre+'" en el glosario. Verificá el nombre.</span>';return;}
+  ej.vid=url;
+  save();
+  if(nubeActiva()&&DB.auth&&DB.auth.rol==='admin')_autoPublicarGlosario();
+  _vidIdx++;
+  if(_vidIdx>=_VIDEOS_PENDIENTES.length){
+    document.getElementById('modal-carga-masiva').style.display='none';
+    alert('✅ Terminaste de mapear todos los videos. El glosario fue guardado en la nube.');
+    return;
+  }
+  _renderMapeoVideo();
+}
+
+function _cmSaltar(){
+  _vidIdx++;
+  if(_vidIdx>=_VIDEOS_PENDIENTES.length){document.getElementById('modal-carga-masiva').style.display='none';alert('Fin de los videos.');return;}
+  _renderMapeoVideo();
 }
 
 function procesarCargaMasiva(){
