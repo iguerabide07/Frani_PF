@@ -1,9 +1,10 @@
 {
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/(.*\\.(png|jpg|jpeg|gif|svg|mp4|mov|webp|ico|css|js|woff|woff2))", "dest": "/$1" },
+    { "src": "/(.*\\.(png|jpg|jpeg|gif|svg|mp4|mov|webp|ico))", "dest": "/$1" },
+    { "src": "/app", "dest": "/app.html" },
+    { "src": "/app.html", "dest": "/app.html" },
+    { "src": "/", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
