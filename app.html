@@ -4374,7 +4374,7 @@ function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 // a.registros = {diaId_secId_ejIdx: {fecha,peso,reps,rir,obsAlumno,kg}}
 // ===================================================================
 
-const SECCIONES_DEFAULT=['Movilidad','Activación','Core','Fuerza','Potencia','Tren Superior','Tren Inferior','Espalda','Pecho','Hombros','Bíceps','Tríceps','Acondicionamiento','Prevención','Recuperación'];
+const SECCIONES_DEFAULT=['Movilidad','Activación','Core','Fuerza','Potencia','Saltabilidad','Tren Superior','Tren Inferior','Espalda','Pecho','Hombros','Bíceps','Tríceps','Acondicionamiento','Prevención','Recuperación'];
 
 // Muscle group map for volume analysis
 const MUS_KEYS={
@@ -4388,7 +4388,8 @@ const MUS_KEYS={
   'Glúteos':['Glúteos','Dominantes de cadera y curl'],
   'Core':['Core','Anti-extensión','Anti-flexión','Anti-rotación y lateral','Rotación y flexión'],
   'Pantorrillas':['Pantorrillas'],
-  'Potencia':['Potencia','Saltabilidad / Pliometría','Snatch','Clean y Jerk','Derivados','Combinados'],
+  'Potencia':['Potencia','Tren Superior','Tren Inferior','Snatch','Clean y Jerk','Derivados','Combinados'],
+  'Saltabilidad':['Drop Jump','Pogo Jump','CMJ','SJ','CEA largo','Salto horizontal','Salto al cajón','Mixto'],
 };
 
 function getMuscleGroup(cat,ex){
@@ -13146,18 +13147,14 @@ async function subirTodosAlumnosNube(){
       var row=_alumnoARow(a);
       var uid=typeof a.id==='string'&&a.id.length>20?a.id:null;
       var resp;
-      if(uid){
-        resp=await sb.from('alumnos').upsert(Object.assign(row,{id:uid}),{onConflict:'id'}).select().single();
-      } else {
-        delete row.id;
-        resp=await sb.from('alumnos').insert(row).select().single();
-      }
+      if(uid){ resp=await sb.from('alumnos').upsert(Object.assign(row,{id:uid}),{onConflict:'id'}).select().single(); }
+      else { delete row.id; resp=await sb.from('alumnos').insert(row).select().single(); }
       if(resp.error){err++;console.warn('Error '+a.nombre+':',resp.error.message);}
       else{a._cloudId=resp.data.id;a.id=resp.data.id;ok++;}
     }catch(e){err++;console.warn(e);}
   }
   save();
-  alert('✓ '+ok+' alumnos subidos.'+(err?' '+err+' errores.':''));
+  alert('✓ '+ok+' alumnos subidos a la nube.'+(err?' '+err+' errores.':''));
   renderAlumnos();
 }
 
@@ -13193,10 +13190,7 @@ async function borrarAlumnoNube(cloudId){
 async function vincularAlumnoNube(perfil){
   if(!nubeActiva())return;
   // buscar la ficha de alumno asociada a esta cuenta (user_id) o por email
-  // Buscar por user_id primero
   var r=await sb.from('alumnos').select('*').eq('user_id', perfil.id).limit(1);
-  if(r.error){ console.warn('vincularAlumno:', r.error.message); }
-  // Si no encuentra, buscar por email en extra
   if(!r.error&&(!r.data||!r.data.length)){
     r=await sb.from('alumnos').select('*').filter('extra->>_email','eq',(perfil.email||'').toLowerCase()).limit(1);
   }
